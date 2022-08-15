@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+    //navega al formulario de login en caso que no esté logeado
     if ( sessionStorage.getItem("loggedIn") === null || sessionStorage.getItem("loggedIn") === false ) {
         window.location = "login.html";
     }

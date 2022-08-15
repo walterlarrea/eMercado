@@ -18,7 +18,7 @@
 
 <body>
   <div class="container">
-    <main>
+    <form class="needs-validation" novalidate>
       <div class="row justify-content-center">
         <div class="col-3">
           <div class="text-center pt-5">
@@ -27,12 +27,18 @@
 
             <div>
               <label class="form-label" for="email">Email</label>
-              <input class="form-control" id="email" type="text" placeholder="Email"><br>
+              <input class="form-control" id="email" type="text" placeholder="Email" required><br>
+              <div class="pb-4 invalid-feedback">
+                Ingresa tu e-mail
+              </div>
             </div>
             
             <div>
               <label class="form-label" for="password">Contraseña</label>
-              <input class="form-control" id="password" type="text" placeholder="Contraseña"><br>
+              <input class="form-control" id="password" type="text" placeholder="Contraseña" required><br>
+              <div class="pb-4 invalid-feedback">
+                Ingresa tu contraseña
+              </div>
             </div>
             <button class="btn btn-primary" type="button" id="loginBtn">Ingresar</button>
 
@@ -60,7 +66,7 @@
           </div>  
         </div>
       </div>
-    </main>
+    </form>
   </div>
   <!-- <main class="mt-5">
     <div class="container">
