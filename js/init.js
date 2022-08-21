@@ -15,6 +15,7 @@ let hideSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "none";
 }
 
+////////// Funciones de session
 let forceUserLogin = function(){
   if ( localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "" ) {
     window.location = "login.html";
@@ -44,6 +45,7 @@ let endUserSession = function(){
 
   window.location = "login.html";
 }
+////////// Fin funciones de session
 
 let getJSONData = function(url){
     let result = {};
