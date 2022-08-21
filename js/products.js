@@ -28,15 +28,21 @@ function showCategoriesList(categoryProd){
         `
         document.getElementById("prod-list-container").innerHTML = htmlContentToAppend; 
     }
+
+    
 }
 
 document.addEventListener("DOMContentLoaded", function(e){
-    //getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function(resultObj){        // Obtener url con información del sistema
-    getJSONData(PRODUCTS_URL + "101" + EXT_TYPE).then(function(resultObj){                                      // Obtener url solo para categoría Autos
-        if (resultObj.status === "ok")
-        {
+    forceUserLogin();
+    showUser();
+    
+    getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function(resultObj){        // Obtener url con información del sistema
+    //getJSONData(PRODUCTS_URL + "101" + EXT_TYPE).then(function(resultObj){                                      // Obtener url solo para categoría Autos
+        if (resultObj.status === "ok") {
             categoryProdList = resultObj.data;
             showCategoriesList(categoryProdList);
+        } else {
+            alert("Ha ocurrido un error.\n" + resultObj.data);
         }
     });
 });

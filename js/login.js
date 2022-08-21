@@ -1,16 +1,26 @@
+function loginSucces(userEmail) {
+    localStorage.setItem("loggedUser", userEmail);
+    window.location = "index.html";
+}
+
 document.addEventListener("DOMContentLoaded", function(){
     const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+    const passInput = document.getElementById("password");
 
+    passInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          document.getElementById("loginBtn").click();
+        }
+    });
     document.getElementById("loginBtn").addEventListener("click", function() {
-        if ( document.getElementById("email").value != "" && document.getElementById("password").value != "" ) {
-            loginSucces()
+        if ( emailInput.value != "" && passInput.value != "" ) {
+            loginSucces(emailInput.value);
         } else {
             if (!emailInput.validity.valid) {
                 emailInput.classList.add("is-invalid");
             }
-            if (!passwordInput.validity.valid) {
-                passwordInput.classList.add("is-invalid");
+            if (!passInput.validity.valid) {
+                passInput.classList.add("is-invalid");
             }
         }
     });
@@ -18,12 +28,7 @@ document.addEventListener("DOMContentLoaded", function(){
     emailInput.addEventListener("input", function () {
         emailInput.classList.remove("is-invalid");
     })
-    passwordInput.addEventListener("input", function () {
-        passwordInput.classList.remove("is-invalid");
+    passInput.addEventListener("input", function () {
+        passInput.classList.remove("is-invalid");
     })
 });
-
-function loginSucces() {
-    sessionStorage.setItem("loggedIn", true);
-    window.location = "index.html";
-}
