@@ -1,10 +1,12 @@
 const ORDER_ASC_BY_COST = "AZ";
 const ORDER_DESC_BY_COST = "ZA";
 const ORDER_BY_PROD_RELEVANCE = "Cant.";
+let searchInput = HTMLElement;
 let currentProductsArray = [];
 let currentSortCriteria = undefined;
 let minCost = undefined;
 let maxCost = undefined;
+let searchBox = undefined;
 
 function sortProducts(criteria, array){
     let result = [];
@@ -39,11 +41,21 @@ function sortProducts(criteria, array){
 
 function showProductsList(){
     let htmlContentToAppend = "";
+    document.getElementById("prod-list-container").innerHTML = htmlContentToAppend;
 
     for (const product of currentProductsArray) {
+        let nameResult = -1;
+        let descResult = -1;
+
+        if ( searchBox != undefined ){
+            nameResult = product.name.toLowerCase().search(searchBox.toLowerCase());
+            descResult = product.description.toLowerCase().search(searchBox.toLowerCase());
+            console.log(nameResult + " - " + descResult)
+        }
 
         if (((minCost == undefined) || (minCost != undefined && parseInt(product.cost) >= minCost)) &&
-            ((maxCost == undefined) || (maxCost != undefined && parseInt(product.cost) <= maxCost))) {
+            ((maxCost == undefined) || (maxCost != undefined && parseInt(product.cost) <= maxCost)) &&
+            ((searchBox == undefined) || (searchBox != undefined && (nameResult >= 0 || descResult >= 0)))) {
 
             htmlContentToAppend += `
             <div class="list-group-item list-group-item-action">
@@ -140,4 +152,14 @@ document.addEventListener("DOMContentLoaded", function(e){
 
         showProductsList();
     });
+
+    searchInput = document.getElementById('searchBar');
+    searchInput.addEventListener("input", function () {
+        if ( searchInput.value === "" ) {
+            searchBox = undefined;
+        } else {
+            searchBox = searchInput.value;
+        }
+        showProductsList();
+    })
 });
