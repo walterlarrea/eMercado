@@ -14,13 +14,15 @@
       background-color: rgb(248, 249, 250);
     }
   </style>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="882935389268-2i6op2sga4c47mukc0ne3nt36vcvv1sf.apps.googleusercontent.com">
 </head>
 
 <body>
   <div class="container">
     <!-- <form class="needs-validation" novalidate> -->
       <div class="row justify-content-center">
-        <div class="col-3">
+        <div class="col col-xs-12 col-sm-6 col-md-3">
           <div class="text-center pt-5">
             <img class="img-fluid" src="img/login.png">
             <h1 class="pb-2 pt-4">Inicio de sesión</h1>
@@ -62,6 +64,7 @@
               data-size="large"
               data-logo_alignment="left">
             </div>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
           </div>  
         </div>

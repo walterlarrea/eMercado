@@ -65,13 +65,10 @@ function showProductsList(){
                     </div>
                     <div class="col">
                         <div class="d-flex w-100 justify-content-between">
-                            <div class="mb-1">
-                            <h4>` + product.name + ` - ` + product.currency + ` ` + product.cost + `</h4> 
-                            <p>` + product.description + `</p> 
-                            </div>
+                            <h4 class="mb-1">` + product.name + ` - ` + product.currency + ` ` + product.cost + `</h4> 
                             <small class="text-muted">`+ product.soldCount + ` vendidos</small> 
                         </div>
-
+                        <p>` + product.description + `</p> 
                     </div>
                 </div>
             </div>
