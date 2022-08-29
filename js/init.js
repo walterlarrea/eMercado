@@ -43,6 +43,12 @@ let endUserSession = function(){
   navUserLi.removeChild(navUserLi.childNodes[0]);
   localStorage.removeItem("loggedUser");
 
+  //Cerrar sesión de google
+  let auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+        console.log('User signed out.');
+        });
+
   window.location = "login.html";
 }
 ////////// Fin funciones de session
