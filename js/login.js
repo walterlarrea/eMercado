@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(){
     function onSignIn(response) {
         // decodeJwtResponse() is a custom function defined by you
         // to decode the credential response.
-        const responsePayload = decodeJwtResponse(response.credential);
+        const responsePayload = jwt_decode(response.credential);
    
         console.log("ID: " + responsePayload.sub);
         console.log('Full Name: ' + responsePayload.name);
