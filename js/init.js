@@ -15,17 +15,15 @@ let hideSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "none";
 }
 
-////////// Funciones de session
+// Redirect to login page if not already logged in
 let forceUserLogin = function(){
   if ( localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "" ) {
     window.location = "login.html";
   }
 }
 
+// Load user info on to the navigation bar
 let showUser = function(){
-  let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
-  let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
-
   let navUserLink = document.createElement('a');
   navUserLink.classList.add("nav-link");
   navUserLink.innerHTML = localStorage.getItem("loggedUser");
@@ -33,9 +31,12 @@ let showUser = function(){
   navUserLink.href = "";
   navUserLink.onclick = endUserSession;
 
+  let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
+  let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
   navUserLi.appendChild(navUserLink);
 }
 
+// End user session and redirect to login page
 let endUserSession = function(){
   let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
   let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
@@ -43,7 +44,7 @@ let endUserSession = function(){
   navUserLi.removeChild(navUserLi.childNodes[0]);
   localStorage.removeItem("loggedUser");
 
-  //Cerrar sesión de google
+  // Google oAuth finish session
   let auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
         console.log('User signed out.');
@@ -51,7 +52,7 @@ let endUserSession = function(){
 
   window.location = "login.html";
 }
-////////// Fin funciones de session
+// Fin funciones de session //
 
 let getJSONData = function(url){
     let result = {};

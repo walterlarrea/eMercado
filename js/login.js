@@ -3,6 +3,20 @@ function loginSucces(userEmail) {
     window.location = "index.html";
 }
 
+// Google sign in and redirect function
+function onSignIn(response) {
+    const responsePayload = jwt_decode(response.credential);// Decodes the response received from google API
+
+    console.log("ID: " + responsePayload.sub);
+    console.log('Full Name: ' + responsePayload.name);
+    console.log('Given Name: ' + responsePayload.given_name);
+    console.log('Family Name: ' + responsePayload.family_name);
+    console.log("Image URL: " + responsePayload.picture);
+    console.log("Email: " + responsePayload.email);
+
+    loginSucces(responsePayload.email);
+}
+
 document.addEventListener("DOMContentLoaded", function(){
     const emailInput = document.getElementById("email");
     const passInput = document.getElementById("password");
@@ -12,8 +26,9 @@ document.addEventListener("DOMContentLoaded", function(){
           document.getElementById("loginBtn").click();
         }
     });
+    
     document.getElementById("loginBtn").addEventListener("click", function() {
-        if ( emailInput.value != "" && passInput.value != "" ) {
+        if ( emailInput.value != "" && passInput.value != "" ) {// Login only if the user introduced both email and password
             loginSucces(emailInput.value);
         } else {
             if (!emailInput.validity.valid) {
@@ -32,21 +47,3 @@ document.addEventListener("DOMContentLoaded", function(){
         passInput.classList.remove("is-invalid");
     })
 });
-
-
-//Script de google SignIn
-function onSignIn(response) {
-    // decodeJwtResponse() is a custom function defined by you
-    // to decode the credential response.
-    const responsePayload = jwt_decode(response.credential);
-
-    console.log("ID: " + responsePayload.sub);
-    console.log('Full Name: ' + responsePayload.name);
-    console.log('Given Name: ' + responsePayload.given_name);
-    console.log('Family Name: ' + responsePayload.family_name);
-    console.log("Image URL: " + responsePayload.picture);
-    console.log("Email: " + responsePayload.email);
-
-    loginSucces(responsePayload.email);
-}
-     
