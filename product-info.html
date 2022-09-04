@@ -36,10 +36,41 @@
       </div>
     </div>
   </nav>
-  <main>
+  <main class="pb-5 pt-3">
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <!-- Product information -->
+      <div class="row">
+        <div class="col" id="prod-info-container">
+          
+        </div>
+      </div>
+      <!-- Product commentaries -->
+      <div class="row pt-5">
+        <h4>Comentarios</h4>
+        <div class="list-group" id="comment-list-container">
+          
+        </div>
+      </div>
+      <!-- New commentary -->
+      <div class="row pt-3">
+        <div class="col col-xs-12 col-md-6">
+          <h4>Comentar</h4>
+          <label class="form-label" for="new-comment-description">Tu opinión:</label>
+          <textarea class="form-control" id="new-comment-description" name="new-comment-description" rows="3" maxlength="160"></textarea>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col col-2">
+          <label class="form-label" for="new-comment-score-select">Tu puntuación:</label>
+          <select class="form-select select-lg-2" name="puntuación" id="new-comment-score-select">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <button class="btn btn-primary mt-2" type="button" id="btn-send-commentary">Enviar</button>
+        </div>
       </div>
     </div>
   </main>

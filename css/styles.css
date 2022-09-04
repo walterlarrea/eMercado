@@ -95,6 +95,11 @@ footer p {
   max-height: 100%;
 }
 
+.img-fit-grid {
+  width: 260px;
+  height: auto;
+}
+
 .alert {
   position: fixed;
   top: 80px;

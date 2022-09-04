@@ -1,3 +1,11 @@
+function checkLoginRedirect () {
+    if ( !(localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "" )) {
+        alert("Cierre su sesión actual para poder iniciar una nueva");
+        window.location = "index.html";
+    }
+}
+checkLoginRedirect() // To check whether there is a user already logged and redirect if true
+
 function loginSucces(userEmail) {
     localStorage.setItem("loggedUser", userEmail);
     window.location = "index.html";
