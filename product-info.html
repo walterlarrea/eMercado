@@ -39,7 +39,7 @@
   <main class="pb-5 mt-3">
     <!-- Modal for displaying Full size pictures -->
     <div class="modal fade" id="imgCarouselModal" tabindex="-1" aria-labelledby="ZoomedImagesCarouselModal" aria-hidden="true">
-      <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
             HOLA esto es un modal
@@ -78,14 +78,16 @@
       </div>
       <!-- Product commentaries -->
       <div class="row pt-5">
-        <h4>Comentarios</h4>
+        <h4 class="mb-3">Comentarios</h4>
         <div class="list-group" id="comment-list-container">
 
         </div>
       </div>
       <!-- Related products -->
-      <div class="row">
-        <div class="col" id="related-products-container">
+      <hr class="mt-5">
+      <h4 class="mb-5 mt-5">Productos relacionados</h4>
+      <div class="container-fluid">
+        <div class="row flex-row flex-nowrap overflow-auto" id="related-products-container">
           
         </div>
       </div>

@@ -94,13 +94,26 @@ function showProductInfoAndPictures () {
     fillZoomedImgModal(); // Fill the modal with carousel with the product images
 }
 
-function showRelatedProducts () {
+function showRelatedProducts() {
     let htmlContentToAppend = '';
     let relatedProdContainer = document.getElementById('related-products-container');
-    relatedProdContainer = htmlContentToAppend;
+    relatedProdContainer.innerHTML = htmlContentToAppend;
 
-    htmlContentToAppend += ``
-
+    for (const prod of currentProduct.relatedProducts) {
+        htmlContentToAppend += `
+        <div class="p-1 m-1 col-6 col-sm-4 col-lg-3">
+            <div onclick="setProdID(${prod.id})" class="border rounded h-100">
+                <div class="row">
+                    <img src="${prod.image}" alt="...">
+                </div>
+               <div class="row mt-3 ms-1 titulo-secundario">
+                    <p>${prod.name}</p>
+                </div>
+            </div>
+        </div>
+        `
+    }
+    relatedProdContainer.innerHTML = htmlContentToAppend;
 }
 
 function loadCommentsLocallyStored() {
@@ -132,7 +145,11 @@ function loadAndShowProductComments () {
         htmlContentToAppend += `
         <div class="list-group-item">
             <div class="row">
-                <p><strong>${comment.user}</strong> - ${comment.dateTime} - 
+            <div class="col-auto auto-me">
+                <p><strong>${comment.user}</strong> - ${comment.dateTime} -</p>
+            </div>
+            <div class="col-auto auto-me">
+                <p>
                 `
         for (let i = 1; i <= 5; i++) {
             if (i <= comment.score) {
@@ -147,6 +164,7 @@ function loadAndShowProductComments () {
         }
         htmlContentToAppend += `
                 </p>
+            </div>
             </div>
             <div class="row">
                 <p>${comment.description}</p>
@@ -201,6 +219,11 @@ function newCommentary() {
     }
 }
 
+function setProdID(id) {
+    localStorage.setItem("prodID", id);
+    window.location = "product-info.html";
+}
+
 document.addEventListener("DOMContentLoaded", function(e){
     forceUserLogin();
     showUser();
@@ -210,7 +233,6 @@ document.addEventListener("DOMContentLoaded", function(e){
             currentProduct = resultObj.data;
             showProductInfoAndPictures();
             showRelatedProducts();
-            return;
         } else {
             alert("No se pudo obtener información del producto.\n" + resultObj.data);
         }

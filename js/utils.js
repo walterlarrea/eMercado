@@ -33,8 +33,8 @@ function showUser() {
             ${localStorage.getItem("loggedUser").slice(0, localStorage.getItem("loggedUser").toString().search("@"))}
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Mi carrito</a></li>
-            <li><a class="dropdown-item" href="#">Mi perfil</a></li>
+            <li><a class="dropdown-item" href="/cart.html">Mi carrito</a></li>
+            <li><a class="dropdown-item" href="/my-profile.html">Mi perfil</a></li>
             <li><a class="dropdown-item" href="javascript:endUserSession();">Cerrar sesión</a></li>
         </ul>
     </div>`

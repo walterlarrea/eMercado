@@ -91,8 +91,6 @@ footer p {
   background: white;
 }
 
-/* Custom rules */
-
 .img-fit {
   max-height: 100%;
 }
@@ -102,13 +100,11 @@ footer p {
   height: auto;
 }
 
+/* Custom rules -------------------------------------------------------*/
+
 .modal-content {
   background-color: transparent;
-}
-
-.modal-fullscreen {
-  height: auto;
-  max-height: 80%;
+  border: 0
 }
 
 .carousel-control-next:focus,
@@ -119,7 +115,11 @@ footer p {
     opacity: .3
 }
 
-/* End of custom rules */
+.titulo-secundario {
+  font-size: 1.125rem;
+}
+
+/* End of custom rules ------------------------------------------------*/
 
 .alert {
   position: fixed;
