@@ -116,6 +116,11 @@ function showRelatedProducts() {
     relatedProdContainer.innerHTML = htmlContentToAppend;
 }
 
+function setProdID(id) {
+    localStorage.setItem("prodID", id);
+    window.location = "/product-info.html";
+}
+
 function loadCommentsLocallyStored() {
     if ( localStorage.getItem("productCommentaries") != null ) {
         currentLocalProdComments = JSON.parse(localStorage.getItem("productCommentaries"));
@@ -217,11 +222,6 @@ function newCommentary() {
     } else {
         commentDescription.classList.add("is-invalid");
     }
-}
-
-function setProdID(id) {
-    localStorage.setItem("prodID", id);
-    window.location = "product-info.html";
 }
 
 document.addEventListener("DOMContentLoaded", function(e){
