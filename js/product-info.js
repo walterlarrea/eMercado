@@ -2,7 +2,62 @@ let currentProduct = {};
 let currentProdComments = [];
 let currentLocalProdComments = [];
 
-function showProductInfo () {
+function fillZoomedImgModal () { // Fill a Carousel inside a hidden Modal
+    let htmlContentToAppend = '';
+    let modalContentContainer = document.getElementById('imgCarouselModal').getElementsByClassName('modal-body')[0];
+    modalContentContainer.innerHTML = htmlContentToAppend;
+    
+    // Begin Carousel structure
+    htmlContentToAppend += `
+    <div id="carouselZoom" class="carousel slide" data-bs-ride="false" data-bs-touch="true">
+        <div class="carousel-indicators">
+    `
+    if (currentProduct.images.length > 0) { // Check for images of the product
+        // Add the first slide INDICATOR of the Carousel
+        htmlContentToAppend += `
+            <button type="button" data-bs-target="#carouselZoom" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        `
+        // Continue to add the rest of the INDICATORS
+        for (let i = 1; i < currentProduct.images.length; i++) { // One image is already added, so the cicle starts on index 1
+            htmlContentToAppend += `
+            <button type="button" data-bs-target="#carouselZoom" data-bs-slide-to="${i}" aria-label="Slide ${i + 1}"></button>
+            `
+        }
+        // Add the first slide PICTURES of the Carousel
+        htmlContentToAppend += `
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="${currentProduct.images[0]}" class="d-block w-100" alt="...">
+            </div>
+            `
+        // Continue to add the rest of the PICTURES
+        for (let i = 1; i < currentProduct.images.length; i++) {
+            htmlContentToAppend += `
+            <div class="carousel-item">
+                <img src="${currentProduct.images[i]}" class="d-block w-100" alt="...">
+            </div>
+            `
+        }
+    }
+    // End of the Carousel structure
+    htmlContentToAppend += `
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselZoom" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselZoom" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    `
+
+    modalContentContainer.innerHTML = htmlContentToAppend;
+}
+
+function showProductInfoAndPictures () {
     //console.log(currentProduct);
     let htmlContentToAppend = '';
     let infoContainer = document.getElementById('prod-info-container');
@@ -29,13 +84,23 @@ function showProductInfo () {
         for ( let i = 0; i < currentProduct.images.length; i++ ) {
             htmlContentToAppend += `
             <div class="col">
-                <img src="${currentProduct.images[i]}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
+                <img src="${currentProduct.images[i]}" data-bs-toggle="modal" data-bs-target="#imgCarouselModal" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
             </div>
             `;
         }
         htmlContentToAppend += `</div>`;
     }
-    infoContainer.innerHTML += htmlContentToAppend;
+    infoContainer.innerHTML = htmlContentToAppend;
+    fillZoomedImgModal(); // Fill the modal with carousel with the product images
+}
+
+function showRelatedProducts () {
+    let htmlContentToAppend = '';
+    let relatedProdContainer = document.getElementById('related-products-container');
+    relatedProdContainer = htmlContentToAppend;
+
+    htmlContentToAppend += ``
+
 }
 
 function loadCommentsLocallyStored() {
@@ -43,11 +108,14 @@ function loadCommentsLocallyStored() {
         currentLocalProdComments = JSON.parse(localStorage.getItem("productCommentaries"));
     }
 }
-function saveCommentsToLocalStore(newCommentary) {
-    if ( newCommentary != null && newCommentary != {} ) {
-        currentLocalProdComments.push(newCommentary);
-        localStorage.setItem("productCommentaries", JSON.stringify(currentLocalProdComments));
-    }
+
+function sortCommentsNewFirst(commentsToSort){
+    commentsToSort.sort(function(a, b) {
+        if ( a.dateTime > b.dateTime ){ return -1; }
+        if ( a.dateTime < b.dateTime ){ return 1; }
+        return 0;
+    });
+    return commentsToSort;
 }
 
 function loadAndShowProductComments () {
@@ -89,13 +157,11 @@ function loadAndShowProductComments () {
     commentsContainer.innerHTML = htmlContentToAppend;
 }
 
-function sortCommentsNewFirst(commentsToSort){
-    commentsToSort.sort(function(a, b) {
-        if ( a.dateTime > b.dateTime ){ return -1; }
-        if ( a.dateTime < b.dateTime ){ return 1; }
-        return 0;
-    });
-    return commentsToSort;
+function saveCommentsToLocalStore(newCommentary) {
+    if ( newCommentary != null && newCommentary != {} ) {
+        currentLocalProdComments.push(newCommentary);
+        localStorage.setItem("productCommentaries", JSON.stringify(currentLocalProdComments));
+    }
 }
 
 function newCommentary() {
@@ -135,27 +201,6 @@ function newCommentary() {
     }
 }
 
-// Redirect to login page if not already logged in
-function forceUserLogin() {
-    if (localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "") {
-        window.location = "login.html";
-    }
-}
-
-// Load user info on to the navigation bar
-function showUser() {
-    let navUserLink = document.createElement('a');
-    navUserLink.classList.add("nav-link");
-    navUserLink.innerHTML = localStorage.getItem("loggedUser");
-    navUserLink.title = "Cerrar sesión (testing)";
-    navUserLink.href = "";
-    navUserLink.onclick = endUserSession;
-
-    let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
-    let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
-    navUserLi.appendChild(navUserLink);
-}
-
 document.addEventListener("DOMContentLoaded", function(e){
     forceUserLogin();
     showUser();
@@ -163,7 +208,8 @@ document.addEventListener("DOMContentLoaded", function(e){
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function(resultObj){
         if (resultObj.status === "ok") {
             currentProduct = resultObj.data;
-            showProductInfo();
+            showProductInfoAndPictures();
+            showRelatedProducts();
             return;
         } else {
             alert("No se pudo obtener información del producto.\n" + resultObj.data);

@@ -37,6 +37,16 @@
     </div>
   </nav>
   <main class="pb-5 mt-3">
+    <!-- Modal for displaying Full size pictures -->
+    <div class="modal fade" id="imgCarouselModal" tabindex="-1" aria-labelledby="ZoomedImagesCarouselModal" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            HOLA esto es un modal
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <!-- Product information -->
       <div class="row">
@@ -70,6 +80,12 @@
       <div class="row pt-5">
         <h4>Comentarios</h4>
         <div class="list-group" id="comment-list-container">
+
+        </div>
+      </div>
+      <!-- Related products -->
+      <div class="row">
+        <div class="col" id="related-products-container">
           
         </div>
       </div>
@@ -95,6 +111,7 @@
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/utils.js"></script>
   <script src="js/product-info.js"></script>
 </body>
 
