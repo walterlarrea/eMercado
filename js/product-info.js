@@ -29,7 +29,7 @@ function showProductInfo () {
         for ( let i = 0; i < currentProduct.images.length; i++ ) {
             htmlContentToAppend += `
             <div class="col">
-                <img src="${currentProduct.images[i]}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.name} ${i + 1}" class="border rounded img-fluid">
+                <img src="${currentProduct.images[i]}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
             </div>
             `;
         }
@@ -38,12 +38,12 @@ function showProductInfo () {
     infoContainer.innerHTML += htmlContentToAppend;
 }
 
-function loadLocallyStoredComments() {
+function loadCommentsLocallyStored() {
     if ( localStorage.getItem("productCommentaries") != null ) {
         currentLocalProdComments = JSON.parse(localStorage.getItem("productCommentaries"));
     }
 }
-function saveToLocalStoredComments(newCommentary) {
+function saveCommentsToLocalStore(newCommentary) {
     if ( newCommentary != null && newCommentary != {} ) {
         currentLocalProdComments.push(newCommentary);
         localStorage.setItem("productCommentaries", JSON.stringify(currentLocalProdComments));
@@ -55,9 +55,10 @@ function loadAndShowProductComments () {
     let commentsContainer = document.getElementById('comment-list-container');
     commentsContainer.innerHTML = htmlContentToAppend;
 
-    loadLocallyStoredComments()
+    loadCommentsLocallyStored()
     // Concatenate remote stored comments and locally allocated into one new array
     let prodComments = currentProdComments.concat(currentLocalProdComments.filter(comm => comm.product == localStorage.getItem("prodID")));
+    prodComments = sortCommentsNewFirst(prodComments);
 
     for (const comment of prodComments) {
         htmlContentToAppend += `
@@ -88,12 +89,21 @@ function loadAndShowProductComments () {
     commentsContainer.innerHTML = htmlContentToAppend;
 }
 
+function sortCommentsNewFirst(commentsToSort){
+    commentsToSort.sort(function(a, b) {
+        if ( a.dateTime > b.dateTime ){ return -1; }
+        if ( a.dateTime < b.dateTime ){ return 1; }
+        return 0;
+    });
+    return commentsToSort;
+}
+
 function newCommentary() {
     let commentDescription = document.getElementById('new-comment-description');
     let commentScore = document.getElementById('new-comment-score-select');
     let localStoredComments = []
 
-    loadLocallyStoredComments()
+    loadCommentsLocallyStored()
     localStoredComments = currentLocalProdComments;
 
     if ( commentDescription.value != "" ) {
@@ -109,9 +119,11 @@ function newCommentary() {
                                 dateTime.toLocaleString("es-US", { month: '2-digit' }) + "-" +
                                 dateTime.toLocaleString("es-US", { day: '2-digit' }) + " " +
                                 dateTime.toLocaleTimeString("en-US", { hour12: false })
+                // dateTime:       `${dateTime.getFullYear}-${dateTime.getMonth + 1}-${dateTime.getDate}` + ` ` + 
+                //                 `${dateTime.getHours}"${dateTime.getMinutes}:${dateTime.getSeconds}`
             }
 
-            saveToLocalStoredComments(newComment);
+            saveCommentsToLocalStore(newComment);
             commentDescription.value = "";
             commentScore.value = 1;
             loadAndShowProductComments();
@@ -121,7 +133,27 @@ function newCommentary() {
     } else {
         commentDescription.classList.add("is-invalid");
     }
+}
 
+// Redirect to login page if not already logged in
+function forceUserLogin() {
+    if (localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "") {
+        window.location = "login.html";
+    }
+}
+
+// Load user info on to the navigation bar
+function showUser() {
+    let navUserLink = document.createElement('a');
+    navUserLink.classList.add("nav-link");
+    navUserLink.innerHTML = localStorage.getItem("loggedUser");
+    navUserLink.title = "Cerrar sesión (testing)";
+    navUserLink.href = "";
+    navUserLink.onclick = endUserSession;
+
+    let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
+    let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
+    navUserLi.appendChild(navUserLink);
 }
 
 document.addEventListener("DOMContentLoaded", function(e){
@@ -132,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function(e){
         if (resultObj.status === "ok") {
             currentProduct = resultObj.data;
             showProductInfo();
+            return;
         } else {
             alert("No se pudo obtener información del producto.\n" + resultObj.data);
         }

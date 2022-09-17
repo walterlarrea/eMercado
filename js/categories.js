@@ -84,9 +84,27 @@ function sortAndShowCategories(sortCriteria, categoriesArray){
     showCategoriesList();
 }
 
-//Función que se ejecuta una vez que se haya lanzado el evento de
-//que el documento se encuentra cargado, es decir, se encuentran todos los
-//elementos HTML presentes.
+// Redirect to login page if not already logged in
+function forceUserLogin() {
+    if (localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "") {
+        window.location = "login.html";
+    }
+}
+
+// Load user info on to the navigation bar
+function showUser() {
+    let navUserLink = document.createElement('a');
+    navUserLink.classList.add("nav-link");
+    navUserLink.innerHTML = localStorage.getItem("loggedUser");
+    navUserLink.title = "Cerrar sesión (testing)";
+    navUserLink.href = "";
+    navUserLink.onclick = endUserSession;
+
+    let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
+    let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
+    navUserLi.appendChild(navUserLink);
+}
+
 document.addEventListener("DOMContentLoaded", function(e){
     forceUserLogin();
     showUser();

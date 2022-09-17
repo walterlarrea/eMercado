@@ -7,6 +7,11 @@ let minCost = undefined;
 let maxCost = undefined;
 let searchBoxValue = undefined;
 
+function setProdID(id) {
+    localStorage.setItem("prodID", id);
+    window.location = "product-info.html";
+}
+
 function showProductsList(){
     let htmlContentToAppend = "";
     document.getElementById("prod-list-container").innerHTML = htmlContentToAppend;
@@ -65,9 +70,25 @@ function sortAndShowProducts(sortCriteria){
     showProductsList();
 }
 
-function setProdID(id) {
-    localStorage.setItem("prodID", id);
-    window.location = "product-info.html"
+// Redirect to login page if not already logged in
+function forceUserLogin() {
+    if (localStorage.getItem("loggedUser") === null || localStorage.getItem("loggedUser") === "") {
+        window.location = "login.html";
+    }
+}
+
+// Load user info on to the navigation bar
+function showUser() {
+    let navUserLink = document.createElement('a');
+    navUserLink.classList.add("nav-link");
+    navUserLink.innerHTML = localStorage.getItem("loggedUser");
+    navUserLink.title = "Cerrar sesión (testing)";
+    navUserLink.href = "";
+    navUserLink.onclick = endUserSession;
+
+    let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
+    let navUserLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
+    navUserLi.appendChild(navUserLink);
 }
 
 document.addEventListener("DOMContentLoaded", function(e){
