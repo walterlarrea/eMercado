@@ -118,7 +118,7 @@ function showRelatedProducts() {
 
 function setProdID(id) {
     localStorage.setItem("prodID", id);
-    window.location = "/product-info.html";
+    window.location = "product-info.html";
 }
 
 function loadCommentsLocallyStored() {
