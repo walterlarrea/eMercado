@@ -57,6 +57,65 @@ function fillZoomedImgModal () { // Fill a Carousel inside a hidden Modal
     modalContentContainer.innerHTML = htmlContentToAppend;
 }
 
+function fillImgCarousel () { // Fill the image carousel using product Pictures
+    let htmlContentToAppend = '';
+    let carouselContainer = document.getElementById('prod-images-container');
+    carouselContainer.innerHTML = htmlContentToAppend;
+    
+    // Begin Carousel structure
+    htmlContentToAppend += `
+    <div id="carousel" class="carousel slide" data-bs-ride="false" data-bs-touch="true">
+    `
+    if (currentProduct.images.length > 0) { // Check for images of the product
+        htmlContentToAppend += `
+        <div class="carousel-inner">
+            <div class="carousel-item allow-zoom active" data-bs-target="#carouselZoom" data-bs-slide-to="0">
+                <img src="${currentProduct.images[0]}" data-bs-toggle="modal" data-bs-target="#imgCarouselModal" class="d-block w-100" alt="...">
+            </div>
+            `
+        // Continue to add the rest of the PICTURES
+        for (let i = 1; i < currentProduct.images.length; i++) {
+            htmlContentToAppend += `
+            <div class="carousel-item allow-zoom" data-bs-target="#carouselZoom" data-bs-slide-to="${i}">
+                <img src="${currentProduct.images[i]}" data-bs-toggle="modal" data-bs-target="#imgCarouselModal" class="d-block w-100" alt="...">
+            </div>
+            `
+        }
+    }
+    // End of the Carousel structure
+    htmlContentToAppend += `
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    `
+    htmlContentToAppend += `
+    <h6 class="mt-2"><strong>Imágenes ilustrativas</strong></h6>
+    `
+    if (currentProduct.images.length > 0) {
+        htmlContentToAppend += `
+        <div class="row flex-row flex-nowrap overflow-auto">
+        `
+        for ( let i = 0; i < currentProduct.images.length; i++ ) {
+            htmlContentToAppend += `
+            <div class="col-3">
+                <img src="${currentProduct.images[i]}" data-bs-target="#carousel" data-bs-slide-to="${i}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
+            </div>
+            `
+        }
+        htmlContentToAppend += `
+        </div>`
+    }
+
+    carouselContainer.innerHTML = htmlContentToAppend;
+}
+
 function showProductInfoAndPictures () {
     //console.log(currentProduct);
     let htmlContentToAppend = '';
@@ -64,34 +123,21 @@ function showProductInfoAndPictures () {
     infoContainer.innerHTML = htmlContentToAppend;
 
     htmlContentToAppend += `
-    <h2 class="pt-4 pb-4">${currentProduct.name}</h2>
+    <h1>${currentProduct.name}</h1>
     <hr>
-    <h6><strong>Precio</strong></h6>
-    <p>${currentProduct.currency} ${currentProduct.cost}</p>
-    <h6><strong>Descripción</strong></h6>
-    <p>${currentProduct.description}</p>
-    <h6><strong>Categoría</strong></h6>
-    <p>${currentProduct.category}</p>
-    <h6><strong>Cantidad de vendidos</strong></h6>
-    <p>${currentProduct.soldCount}</p>
-    <h6><strong>Imágenes ilustrativas</strong></h6>
-    `;
+    <h4><strong>Precio</strong></h4>
+    <p class="fs-5">${currentProduct.currency} ${currentProduct.cost}</p>
+    <h4><strong>Descripción</strong></h4>
+    <p class="fs-5">${currentProduct.description}</p>
+    <h4><strong>Categoría</strong></h4>
+    <p class="fs-5">${currentProduct.category}</p>
+    <h4><strong>Cantidad de vendidos</strong></h4>
+    <p class="fs-5">${currentProduct.soldCount}</p>
+    `
 
-    if (currentProduct.images.length > 0) {
-        htmlContentToAppend += `
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        `;
-        for ( let i = 0; i < currentProduct.images.length; i++ ) {
-            htmlContentToAppend += `
-            <div class="col">
-                <img src="${currentProduct.images[i]}" data-bs-toggle="modal" data-bs-target="#imgCarouselModal" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
-            </div>
-            `;
-        }
-        htmlContentToAppend += `</div>`;
-    }
     infoContainer.innerHTML = htmlContentToAppend;
     fillZoomedImgModal(); // Fill the modal with carousel with the product images
+    fillImgCarousel(); // Fill the modal with carousel with the product images
 }
 
 function showRelatedProducts() {
@@ -101,14 +147,12 @@ function showRelatedProducts() {
 
     for (const prod of currentProduct.relatedProducts) {
         htmlContentToAppend += `
-        <div class="p-1 m-1 col-6 col-sm-4 col-lg-3">
-            <div onclick="setProdID(${prod.id})" class="border rounded h-100">
-                <div class="row">
-                    <img src="${prod.image}" alt="...">
-                </div>
-               <div class="row mt-3 ms-1 titulo-secundario">
-                    <p>${prod.name}</p>
-                </div>
+        <div onclick="setProdID(${prod.id})" class="border rounded h-100 m-1 col-6 col-sm-4 col-lg-3">
+            <div class="row">
+                <img class="p-0" src="${prod.image}" alt="...">
+            </div>
+            <div class="row m-1 fs-5">
+                <p>${prod.name}</p>
             </div>
         </div>
         `
