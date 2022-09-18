@@ -119,12 +119,20 @@ function fillImgCarousel () { // Fill the image carousel using product Pictures
 function showProductInfoAndPictures () {
     //console.log(currentProduct);
     let htmlContentToAppend = '';
-    let infoContainer = document.getElementById('prod-info-container');
-    infoContainer.innerHTML = htmlContentToAppend;
+    let titleContainer = document.getElementById('prod-title-container');
+    titleContainer.innerHTML = htmlContentToAppend;
 
     htmlContentToAppend += `
     <h1>${currentProduct.name}</h1>
     <hr>
+    `
+    titleContainer.innerHTML = htmlContentToAppend;
+
+    htmlContentToAppend = '';
+    let infoContainer = document.getElementById('prod-info-container');
+    infoContainer.innerHTML = htmlContentToAppend;
+
+    htmlContentToAppend += `
     <h4><strong>Precio</strong></h4>
     <p class="fs-5">${currentProduct.currency} ${currentProduct.cost}</p>
     <h4><strong>Descripción</strong></h4>
