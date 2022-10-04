@@ -108,16 +108,12 @@ footer p {
 }
 
 .allow-zoom {
-  cursor:zoom-in;
+  cursor: zoom-in;
 }
 
-/* .carousel-control-next:focus,
-.carousel-control-next:hover,
-.carousel-control-prev:focus,
-.carousel-control-prev:hover {
-    background-color: #000;
-    opacity: .3
-} */
+.img-fit-table {
+  width: 4em;
+}
 
 /* End of custom rules ------------------------------------------------*/
 
