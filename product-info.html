@@ -38,7 +38,8 @@
   </nav>
   <main class="pb-5 mt-3">
     <!-- Modal for displaying Full size pictures -->
-    <div class="modal fade" id="imgCarouselModal" tabindex="-1" aria-labelledby="ZoomedImagesCarouselModal" aria-hidden="true">
+    <div class="modal fade" id="imgCarouselModal" tabindex="-1" aria-labelledby="ZoomedImagesCarouselModal"
+      aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
@@ -50,15 +51,18 @@
     <div class="container">
       <!-- Product information -->
       <div class="row row-cols-1 row-cols-lg-2 pb-4">
-        <div class="col"></div>
+        <div class="col">
+          <button type="button" class="btn btn-link" id="btn-back"><i class="fas fa-solid fa-arrow-left"></i> Volver al
+            listado</button>
+        </div>
         <div class="col pt-4" id="prod-title-container">
 
         </div>
         <div class="col" id="prod-images-container">
-          
+
         </div>
         <div class="col pt-4" id="prod-info-container">
-          
+
         </div>
       </div>
       <hr class="mt-1">
@@ -96,7 +100,7 @@
       <h4 class="mb-5 mt-5">Productos relacionados</h4>
       <div class="container-fluid">
         <div class="row flex-row flex-nowrap overflow-auto" id="related-products-container">
-          
+
         </div>
       </div>
     </div>
