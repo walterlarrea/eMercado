@@ -317,6 +317,7 @@ function updateLocalCart() {
             image: currentProduct.images[0] ?? ''
         }
         eUserCart.articles.push(newArticle);
+        // Update LocalStorage
         locallyStoredCarts[eUserCartIndex] = eUserCart;
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts))
     } else {
