@@ -2,7 +2,7 @@ const userID = USER_ID;
 
 let currentProduct = {};
 let currentProdComments = [];
-let currentLocalProdComments = [];
+let allLocalProdComments = [];
 
 function fillZoomedImgModal() { // Fill a Carousel inside a hidden Modal
     let htmlContentToAppend = '';
@@ -134,15 +134,25 @@ function showProductInfoAndPictures() {
     let infoContainer = document.getElementById('prod-info-container');
     infoContainer.innerHTML = htmlContentToAppend;
 
+    let allCurrentProdComments = currentProdComments.concat(allLocalProdComments.filter(comm => comm.product == localStorage.getItem("prodID")));
+    let averageScore = allCurrentProdComments.reduce((acu, comm) => acu + comm.score, 0) / allCurrentProdComments.length; // Score average based on commentaries
+
     htmlContentToAppend += `
-    <h4><strong>Precio</strong></h4>
-    <p class="fs-5">${currentProduct.currency} ${currentProduct.cost}</p>
-    <h4><strong>Descripción</strong></h4>
-    <p class="fs-5">${currentProduct.description}</p>
-    <h4><strong>Categoría</strong></h4>
-    <p class="fs-5">${currentProduct.category}</p>
-    <h4><strong>Cantidad de vendidos</strong></h4>
-    <p class="fs-5">${currentProduct.soldCount}</p>
+    <p class="fs-6 text-muted">${currentProduct.soldCount} Vendidos</p>
+    <p>`
+    for (let i = 1; i <= 5; i++) {
+        htmlContentToAppend += `
+            <span class="fas fa-star${i <= Math.round(averageScore) ? ' checked' : ''}"></span>`
+    }
+    htmlContentToAppend += `
+     ( ${allCurrentProdComments.length} opiniones )</p>
+    <p class="fs-2"><strong>${currentProduct.currency} ${currentProduct.cost}</strong></p>
+    <h6><strong>Descripción</strong></h6>
+    <p class="fs-6">${currentProduct.description}</p>
+    <h6><strong>Categoría</strong></h6>
+    <p class="fs-6">${currentProduct.category}</p>
+    
+    
     <p class="text-end"><button type="button" class="btn btn-success text-end" id="btn-add-to-cart"><i class="fas fa-regular fa-cart-plus"></i>Agregar</button></p>
     `
 
@@ -152,6 +162,8 @@ function showProductInfoAndPictures() {
 
     fillZoomedImgModal(); // Fill the modal with carousel with the product images
     fillImgCarousel(); // Fill the modal with carousel with the product images
+
+    document.getElementById('back-to-listing-category-name').innerHTML = currentProduct.category;
 }
 
 function showRelatedProducts() {
@@ -181,7 +193,7 @@ function setProdID(id) {
 
 function loadCommentsLocallyStored() {
     if (localStorage.getItem("productCommentaries") != null) {
-        currentLocalProdComments = JSON.parse(localStorage.getItem("productCommentaries"));
+        allLocalProdComments = JSON.parse(localStorage.getItem("productCommentaries"));
     }
 }
 
@@ -201,7 +213,7 @@ function loadAndShowProductComments() {
 
     loadCommentsLocallyStored()
     // Concatenate remote stored comments and locally allocated into one new array
-    let prodComments = currentProdComments.concat(currentLocalProdComments.filter(comm => comm.product == localStorage.getItem("prodID")));
+    let prodComments = currentProdComments.concat(allLocalProdComments.filter(comm => comm.product == localStorage.getItem("prodID")));
     prodComments = sortCommentsNewFirst(prodComments);
 
     for (const comment of prodComments) {
@@ -240,18 +252,16 @@ function loadAndShowProductComments() {
 
 function saveCommentsToLocalStore(newCommentary) {
     if (newCommentary != null && newCommentary != {}) {
-        currentLocalProdComments.push(newCommentary);
-        localStorage.setItem("productCommentaries", JSON.stringify(currentLocalProdComments));
+        allLocalProdComments.push(newCommentary);
+        localStorage.setItem("productCommentaries", JSON.stringify(allLocalProdComments));
     }
 }
 
 function newCommentary() {
     let commentDescription = document.getElementById('new-comment-description');
     let commentScore = document.getElementById('new-comment-score-select');
-    let localStoredComments = []
 
     loadCommentsLocallyStored()
-    localStoredComments = currentLocalProdComments;
 
     if (commentDescription.value != "") {
         if (parseInt(commentScore.value) > 0 && parseInt(commentScore.value) <= 5) {
@@ -329,6 +339,15 @@ function updateLocalCart() {
 document.addEventListener("DOMContentLoaded", function (e) {
     forceUserLogin();
     showUser();
+    // Fetch product commentaries
+    getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function (resultObj) {
+        if (resultObj.status === "ok") {
+            currentProdComments = resultObj.data;
+            loadAndShowProductComments();
+        } else {
+            alert("No se pudo obtener los comentarios del producto.\n" + resultObj.data);
+        }
+    });
     // Fetch product information
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
@@ -337,15 +356,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
             showRelatedProducts();
         } else {
             alert("No se pudo obtener información del producto.\n" + resultObj.data);
-        }
-    });
-    // Fetch product commentaries
-    getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function (resultObj) {
-        if (resultObj.status === "ok") {
-            currentProdComments = resultObj.data;
-            loadAndShowProductComments();
-        } else {
-            alert("No se pudo obtener los comentarios del producto.\n" + resultObj.data);
         }
     });
 
@@ -361,4 +371,3 @@ document.addEventListener("DOMContentLoaded", function (e) {
     // Back to listing event
     document.getElementById('btn-back').addEventListener("click", (e) => window.location = "products.html");
 });
-
