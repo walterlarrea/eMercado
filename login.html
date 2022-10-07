@@ -5,26 +5,21 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
-  
+
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
 
-  <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
-  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-            
   <style>
     body {
       background-color: rgb(248, 249, 250);
     }
   </style>
-  </head>
+</head>
 
 <body>
   <main>
     <div class="container">
-      <!-- <form class="needs-validation" novalidate> -->
       <div class="row justify-content-center pt-5">
         <div class="col col-xs-12 col-sm-6 col-md-4 col-lg-3 text-center">
           <img class="img-fluid" src="img/login.png">
@@ -40,30 +35,22 @@
             Ingresa tu contraseña
           </div>
           <button class="btn btn-primary" type="button" id="loginBtn">Ingresar</button>
-  
+
           <!-- BOTÓN Seguir con google -->
           <div class="d-flex justify-content-center">
             <div id="g_id_onload"
-              data-client_id="882935389268-2i6op2sga4c47mukc0ne3nt36vcvv1sf.apps.googleusercontent.com" data-context="use"
-              data-ux_mode="popup" data-callback="onSignIn" data-auto_prompt="false">
+              data-client_id="882935389268-2i6op2sga4c47mukc0ne3nt36vcvv1sf.apps.googleusercontent.com"
+              data-context="use" data-ux_mode="popup" data-callback="onSignIn" data-auto_prompt="false">
             </div>
-            <div class="g_id_signin pt-4" data-type="standard" data-shape="rectangular" data-theme="filled_black"
-              data-text="$ {button.text}" data-size="large" data-logo_alignment="left">
+            <div class="g_id_signin pt-4" data-type="standard" data-shape="pill" data-theme="outline"
+              data-text="$ {continue_with}" data-size="large" data-logo_alignment="left">
             </div>
-  
           </div>
+
         </div>
       </div>
-      <!-- </form> -->
     </div>
   </main>
-  <!-- <main class="mt-5">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
-    </div>
-  </main> -->
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -75,6 +62,10 @@
     </div>
   </footer>
   <script src="js/login.js"></script>
+  <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <!-- Old Google Auth  -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 
 </html>
