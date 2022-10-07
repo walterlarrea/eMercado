@@ -1,17 +1,17 @@
 // End user session and redirect to login page
-let endUserSession = function(){
+let endUserSession = function () {
     let navBarUls = document.getElementById('navbarNav').getElementsByTagName('ul');
     let navBarLastLi = navBarUls[0].getElementsByTagName('li').item(navBarUls[0].getElementsByTagName('li').length - 1);
-  
+
     navBarLastLi.removeChild(navBarLastLi.childNodes[0]);
     localStorage.removeItem("loggedUser");
-  
+
     // Google oAuth finish session
     // let auth2 = gapi.auth2.getAuthInstance();
-    //       auth2.signOut().then(function () {
-    //       console.log('User signed out.');
-    //       });
-  
+    // auth2.signOut().then(function () {
+    //     console.log('User signed out.');
+    // });
+
     window.location = "login.html";
 }
 
@@ -26,11 +26,12 @@ function forceUserLogin() {
 function showUser() {
     let navBar = document.getElementById('navbarNav').getElementsByTagName('ul');
     let navBarLastLi = navBar[0].getElementsByTagName('li').item(navBar[0].getElementsByTagName('li').length - 1);
+    let userMail = localStorage.getItem("loggedUser") || "noNameUser";
 
     navBarLastLi.innerHTML = `
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            ${localStorage.getItem("loggedUser").slice(0, localStorage.getItem("loggedUser").toString().search("@"))}
+            ${userMail.includes('@') ? userMail.slice(0, userMail.search("@")) : userMail}
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
