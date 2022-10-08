@@ -26,7 +26,7 @@ function showArticles() {
     }
 }
 
-// Update local stored cart articles if count is changed for an article
+// Update local stored cart articles if count is changed for an article!
 function updateCantAndShowArticles(event) {
     let artID = parseInt(event.target.getAttribute('data-prod-id'));
     let cant = event.target.value;
