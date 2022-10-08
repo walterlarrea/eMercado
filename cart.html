@@ -38,7 +38,7 @@
   <main>
     <div class="container">
       <h2 class="text-center mt-4">Carrito de compras</h2>
-      <div class="row ms-4 me-4 mt-5">
+      <div class="row mb-5 mt-5">
         <h4>Artículos a comprar</h4>
 
         <table class="table mt-3">
@@ -52,17 +52,42 @@
               <th scope="col">Subtotal</th>
             </tr>
           </thead>
-          <tbody class="table-group-divider" id="product-list">
+          <tbody class="table-group-divider" id="product-list-tb">
             <tr>
-              <td><img src="..." alt="" class="rounded"></td>
-              <td></td>
-              <td></td>
-              <td><input type="number" min="1"></td>
-              <td></td>
             </tr>
           </tbody>
         </table>
-
+        <hr>
+      </div>
+      <div class="row">
+        <h4>Tipo de envío</h4>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="shipping-type" id="ship-premium">
+          <label class="form-check-label" for="ship-premium">
+            Premium 2 a 5 días (15%)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="shipping-type" id="ship-express">
+          <label class="form-check-label" for="ship-express">
+            Express 5 a 8 días (7%)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="shipping-type" id="ship-standard">
+          <label class="form-check-label" for="ship-standard">
+            Standard 12 a 15 días (5%)
+          </label>
+        </div>
+        <hr>
+        <h4>Dirección de envío</h4>
+        <label for="calle" class="form-label">Calle</label>
+        <input type="text" id="dir-calle" class="form-control">
+        <label for="dir-numero-puerta" class="form-label">Numero</label>
+        <input type="text" id="dir-numero-puerta" class="form-control">
+        <label for="dir-esquina" class="form-label">Esquina</label>
+        <input type="text" id="dir-esquina" class="form-control">
+        <hr class="mt-5">
       </div>
     </div>
   </main>

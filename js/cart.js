@@ -5,7 +5,7 @@ let userCart = {};
 forceUserLogin();
 
 function showArticles() {
-    const productListElement = document.getElementById('product-list');
+    const productListElement = document.getElementById('product-list-tb');
     let htmlProductToAppend = '';
     productListElement.innerHTML = htmlProductToAppend;
 
@@ -19,7 +19,7 @@ function showArticles() {
             <td>${art.currency} ${art.unitCost}</td>
             <td><input class="form-control" type="number" min="1" value="${art.count}" data-prod-id="${art.id}"></td>
             <td><button class="btn btn-dark" onclick="deleteArticle(this)" data-prod-id="${art.id}"><i class="fas fa-solid fa-trash"></i> Eliminar</button></td>
-            <td>${art.currency} ${art.unitCost * art.count}</td>
+            <td><strong>${art.currency} ${art.unitCost * art.count}</strong></td>
         </tr>
         `
         productListElement.innerHTML += htmlProductToAppend;
@@ -30,6 +30,8 @@ function showArticles() {
 function updateCantAndShowArticles(event) {
     let artID = parseInt(event.target.getAttribute('data-prod-id'));
     let cant = event.target.value;
+
+    if (event.target.type != 'NUMBER') return; // Only process numeric inputs
 
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     let regExp = /^[1-9]\d*$/g; // Regular expression to test() true only for numeric positive inputs
@@ -85,9 +87,9 @@ function updateCarts(apiCart) { // Load API served Cart into local storage
         locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     }
 
-    let userCartIndex = locallyStoredCarts.findIndex(cart => cart.user === userID);
+    let userCartIndex = locallyStoredCarts.findIndex(cart => cart?.user === userID);
     let userCart = locallyStoredCarts[userCartIndex];
-    if (userCart < 0 && userCart == undefined) { // Save user Cart if doesn't already exist
+    if (userCart < 0 || userCart == undefined) { // Save user Cart if doesn't already exist
         locallyStoredCarts.push(apiCart);
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts));
     } else { // Update user Cart using Cart served by API
