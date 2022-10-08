@@ -31,7 +31,7 @@ function updateCantAndShowArticles(event) {
     let artID = parseInt(event.target.getAttribute('data-prod-id'));
     let cant = event.target.value;
 
-    if (event.target.type != 'NUMBER') return; // Only process numeric inputs
+    if (event.target.type.toLowerCase() != 'NUMBER') return; // Only process numeric inputs
 
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     let regExp = /^[1-9]\d*$/g; // Regular expression to test() true only for numeric positive inputs
