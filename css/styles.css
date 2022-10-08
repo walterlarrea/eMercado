@@ -115,6 +115,11 @@ footer p {
   width: 4em;
 }
 
+input[type='number']{
+  min-width: min-content;
+  max-width: max-content;
+}
+
 /* End of custom rules ------------------------------------------------*/
 
 .alert {
