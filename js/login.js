@@ -31,27 +31,37 @@ function onSignIn(response) {
     loginSucces(responsePayload.email);
 }
 
+function loginValidate(emailInput, passInput) {
+    if (emailInput.value != "" && passInput.value != "") {// Login only if the user introduced both email and password
+        loginSucces(emailInput.value);
+    } else {
+        if (!emailInput.validity.valid) {
+            emailInput.classList.add("is-invalid");
+        }
+        if (!passInput.validity.valid) {
+            passInput.classList.add("is-invalid");
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passInput = document.getElementById("password");
 
+    // Enter key binds
+    emailInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            passInput.focus();
+        }
+    });
     passInput.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
-            document.getElementById("loginBtn").click();
+            loginValidate(emailInput, passInput);
         }
     });
 
     document.getElementById("loginBtn").addEventListener("click", function () {
-        if (emailInput.value != "" && passInput.value != "") {// Login only if the user introduced both email and password
-            loginSucces(emailInput.value);
-        } else {
-            if (!emailInput.validity.valid) {
-                emailInput.classList.add("is-invalid");
-            }
-            if (!passInput.validity.valid) {
-                passInput.classList.add("is-invalid");
-            }
-        }
+        loginValidate(emailInput, passInput);
     });
 
     emailInput.addEventListener("input", function () {
