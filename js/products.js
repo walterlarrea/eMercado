@@ -33,9 +33,9 @@ function showProductsList() {
             <div onclick="setProdID(${product.id})" class="list-group-item list-group-item-action">
                 <div class="row">
                     <div class="col-12 col-md-3">
-                        <img src="` + product.image + `" alt="product image" class="img-thumbnail">
+                        <img src="` + product.image + `" alt="product image" class="img-fluid rounded border-bottom">
                     </div>
-                    <div class="col">
+                    <div class="col mt-2">
                         <div class="d-flex w-100 justify-content-between">
                             <h4 class="mb-1">` + product.name + ` - ` + product.currency + ` ` + product.cost + `</h4> 
                             <small class="text-muted">`+ product.soldCount + ` vendidos</small> 
@@ -46,8 +46,8 @@ function showProductsList() {
             </div>
             `
         }
+        document.getElementById("prod-list-container").innerHTML = htmlContentToAppend;
     }
-    document.getElementById("prod-list-container").innerHTML = htmlContentToAppend;
 }
 
 function sortAndShowProducts(sortCriteria) {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         showProductsList();
     });
 
-    const searchBoxInput = document.getElementById('searchBar');
+    const searchBoxInput = document.getElementById('search-bar');
     searchBoxInput.addEventListener("input", function (e) {
         if (searchBoxInput.value !== "") {
             searchBoxValue = searchBoxInput.value;

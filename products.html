@@ -37,20 +37,13 @@
     </div>
   </nav>
 
-  <main role="main" class="pb-5">
+  <main role="main" class="mb-5">
     <div class="text-center p-4">
       <h2>Productos</h2>
       <p class="lead">Verás aquí todos los productos de la categoría <strong id="cat-name"></strong></p>
     </div>
     <div class="container">
       <div class="row">
-        <!-- Search filter -->
-        <div class="col-12 col-md-6">
-          <div class="input-group mb-3">
-            <input class="form-control" type="search" placeholder="Buscar" id="searchBar">
-            <label class="btn btn-secondary" for="searchBar"><i class="fas fa-search mr-1"></i></label>
-          </div>
-        </div>
         <!-- Sorting -->
         <div class="col text-end">
           <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
@@ -65,21 +58,29 @@
       </div>
       <!-- Filters -->
       <div class="row">
-        <div class="col-12 col-lg-6 offset-lg-6 mb-1">
-          <div class="row container p-0 m-0">
-            <div class="col">
-              <p class="font-weight-normal text-end my-2">Precio</p>
+        <!-- Search filter -->
+        <div class="col-12 col-md-6 mb-1">
+          <div class="input-group mb-3">
+            <input class="form-control" type="search" placeholder="Buscar" id="search-bar">
+            <label class="btn btn-secondary" for="searchBar"><i class="fas fa-search mr-1"></i></label>
+          </div>
+        </div>
+        <!-- Price filter -->
+        <div class="col-12 col-md-6 mb-1">
+          <div class="row">
+            <div class="col p-0">
+              <p class="font-weight-normal text-end my-2">Precio: </p>
             </div>
-            <div class="col">
+            <div class="col px-1">
               <input class="form-control" type="number" placeholder="min." id="rangeFilterCostMin">
             </div>
-            <div class="col">
+            <div class="col px-1">
               <input class="form-control" type="number" placeholder="máx." id="rangeFilterCostMax">
             </div>
             <div class="col p-0">
               <div class="btn-group" role="group">
-                <button class="btn btn-secondary btn-block" id="rangeFilterCost">Filtrar</button>
-                <button class="btn btn-light btn-sm" id="clearRangeFilter">Limpiar</button>
+                <button class="btn btn-secondary" id="rangeFilterCost">Filtrar</button>
+                <button class="btn btn-light" id="clearRangeFilter">Limpiar</button>
               </div>
             </div>
           </div>
@@ -87,7 +88,7 @@
       </div>
       <!-- List content -->
       <div class="row">
-        <div class="list-group" id="prod-list-container">
+        <div class="list-group px-2" id="prod-list-container">
 
         </div>
       </div>
