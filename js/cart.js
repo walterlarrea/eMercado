@@ -17,8 +17,8 @@ function showArticles() {
             <td><img src="${art.image}" alt="${art.name}" class="rounded img-fit-table"></td>
             <td>${art.name}</td>
             <td>${art.currency} ${art.unitCost}</td>
-            <td><input class="form-control" type="number" min="1" value="${art.count}" data-prod-id="${art.id}"></td>
-            <td><button class="btn btn-dark" onclick="deleteArticle(this)" data-prod-id="${art.id}"><i class="fas fa-solid fa-trash"></i> Eliminar</button></td>
+            <td><input class="form-control" type="number" min="1" max="99" value="${art.count}" data-prod-id="${art.id}"></td>
+            <td><button class="btn btn-dark" onclick="deleteArticle(this)" data-prod-id="${art.id}"><i class="fas fa-solid fa-trash"></i><span class="d-none d-md-inline"> Eliminar</span></button></td>
             <td><strong>${art.currency} ${art.unitCost * art.count}</strong></td>
         </tr>
         `
@@ -31,7 +31,7 @@ function updateCantAndShowArticles(event) {
     let artID = parseInt(event.target.getAttribute('data-prod-id'));
     let cant = event.target.value;
 
-    if (event.target.type != 'NUMBER') return; // Only process numeric inputs
+    if (event.target.type.toLowerCase() != 'number') return; // Only process numeric inputs
 
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     let regExp = /^[1-9]\d*$/g; // Regular expression to test() true only for numeric positive inputs

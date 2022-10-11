@@ -298,7 +298,7 @@ function updateLocalCart() {
     if (currentProduct === undefined && userID === undefined) return; // Check for valid data
 
     if (locallyStoredCarts === null) { // Create LocalStorage if doesn't already exist
-        localStorage.setItem('cartArticlesByUsrID', JSON.stringify('[]'));
+        localStorage.setItem('cartArticlesByUsrID', JSON.stringify([]));
         locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     }
 
