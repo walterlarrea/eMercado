@@ -17,7 +17,7 @@ function showArticles() {
     if (userCart?.articles == undefined || userCart.articles?.lenght == 0) return // End function if there are no articles or Articles is undefined
 
     for (const art of userCart.articles) {
-        htmlProductToAppend = `
+        htmlProductToAppend += `
         <tr>
             <td><img src="${art.image}" alt="${art.name}" onclick="setProdIDAndRedirect(${art.id})" class="rounded img-fit-table"></td>
             <td>${art.name}</td>
@@ -27,16 +27,16 @@ function showArticles() {
             <td><button class="btn btn-dark" onclick="deleteArticle(this)" data-prod-id="${art.id}"><i class="fas fa-solid fa-trash"></i><span class="d-none d-md-inline"> Eliminar</span></button></td>
         </tr>
         `
-        productListElement.innerHTML += htmlProductToAppend;
+        productListElement.innerHTML = htmlProductToAppend;
     }
 }
 
 // Update local stored cart articles if count is changed for an article!
 function updateCantAndShowArticles(event) {
-    let artID = parseInt(event.target.getAttribute('data-prod-id'));
+    let artID = parseInt(event.target.getAttribute('data-prod-id')) || undefined;
     let cant = event.target.value;
 
-    if (event.target.type.toLowerCase() != 'number') return; // Only process numeric inputs
+    if (event.target.type.toLowerCase() != 'number' || artID == undefined) return; // Only process numeric inputs
 
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     let regExp = /^[1-9]\d*$/g; // Regular expression to test() true only for numeric positive inputs
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         } else {
             alert("No se pudo obtener la lista de productos.\n" + resultObj.data);
         }
-    }).then(loadAndShowCartArticles)
+    }).then(loadAndShowCartArticles)// This could be illegal :O
 
     document.addEventListener("change", (e) => {
         if (e.target.tagName === 'INPUT') {

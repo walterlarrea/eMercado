@@ -154,7 +154,7 @@ function showProductInfoAndPictures() {
             <span class="fas fa-star${i <= Math.round(averageScore) ? ' checked' : ''}"></span>`
     }
     htmlContentToAppend += `
-     ( ${allCurrentProdComments.length} opiniones )</p>
+    ( ${allCurrentProdComments.length} ${currentProdComments.length === 1 ? 'opinión' : 'opiniones'} )</p>
     <p class="fs-2"><strong>${currentProduct.currency} ${currentProduct.cost}</strong></p>
     <h6><strong>Descripción</strong></h6>
     <p class="fs-6">${currentProduct.description}</p>
