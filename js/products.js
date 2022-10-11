@@ -7,6 +7,8 @@ let minCost = undefined;
 let maxCost = undefined;
 let searchBoxValue = undefined;
 
+forceUserLogin();
+
 function setProdID(id) {
     localStorage.setItem("prodID", id);
     window.location = "product-info.html";
@@ -71,7 +73,6 @@ function sortAndShowProducts(sortCriteria) {
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
-    forceUserLogin();
     showUser();
 
     // Obtain products list creating url using sistem saved information

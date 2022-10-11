@@ -4,6 +4,8 @@ let currentProduct = {};
 let currentProdComments = [];
 let allLocalProdComments = [];
 
+forceUserLogin();
+
 function fillZoomedImgModal() { // Fill a Carousel inside a hidden Modal
     let htmlContentToAppend = '';
     let modalContentContainer = document.getElementById('imgCarouselModal').getElementsByClassName('modal-body')[0];
@@ -342,7 +344,6 @@ function updateLocalCart() {
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
-    forceUserLogin();
     showUser();
     // Fetch product commentaries
     getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function (resultObj) {

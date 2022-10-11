@@ -37,8 +37,8 @@
   </nav>
   <main>
     <div class="container">
-      <h2 class="text-center mt-4">Carrito de compras</h2>
-      <div class="row mb-5 mt-5">
+      <h1 class="text-center mt-4">Carrito de compras</h1>
+      <div class="row mb-5 mt-3">
         <h4>Artículos a comprar</h4>
 
         <table class="table mt-3">
@@ -48,8 +48,8 @@
               <th scope="col">Nombre</th>
               <th scope="col">Costo</th>
               <th scope="col">Cantidad</th>
-              <th scope="col"></th>
               <th scope="col">Subtotal</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody class="table-group-divider" id="product-list-tb">
@@ -59,34 +59,41 @@
         </table>
         <hr>
       </div>
-      <div class="row">
+      <div class="row mx-2">
         <h4>Tipo de envío</h4>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="shipping-type" id="ship-premium">
+          <input class="form-check-input" type="radio" name="shipping-option" id="ship-premium">
           <label class="form-check-label" for="ship-premium">
             Premium 2 a 5 días (15%)
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="shipping-type" id="ship-express">
+          <input class="form-check-input" type="radio" name="shipping-option" id="ship-express">
           <label class="form-check-label" for="ship-express">
             Express 5 a 8 días (7%)
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="shipping-type" id="ship-standard">
+          <input class="form-check-input" type="radio" name="shipping-option" id="ship-standard">
           <label class="form-check-label" for="ship-standard">
             Standard 12 a 15 días (5%)
           </label>
         </div>
         <hr>
         <h4>Dirección de envío</h4>
-        <label for="calle" class="form-label">Calle</label>
-        <input type="text" id="dir-calle" class="form-control">
-        <label for="dir-numero-puerta" class="form-label">Número</label>
-        <input type="text" id="dir-numero-puerta" class="form-control">
-        <label for="dir-esquina" class="form-label">Esquina</label>
-        <input type="text" id="dir-esquina" class="form-control">
+        <div class="col-12 col-md-auto">
+          <label for="calle" class="form-label">Calle</label>
+          <input type="text" id="dir-calle" size="40" class="form-control">
+        </div>
+        <div class="col-8 col-md-auto">
+          <label for="dir-numero-puerta" class="form-label">Número</label>
+          <input type="text" id="dir-numero-puerta" size="9" class="form-control">
+        </div>
+        <br>
+        <div class="col-12 col-md-auto">
+          <label for="dir-esquina" class="form-label">Esquina</label>
+          <input type="text" id="dir-esquina" size="40" class="form-control">
+        </div>
         <hr class="mt-5">
       </div>
     </div>
