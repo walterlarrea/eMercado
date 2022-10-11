@@ -25,7 +25,7 @@ function fillZoomedImgModal() { // Fill a Carousel inside a hidden Modal
             <button type="button" data-bs-target="#carouselZoom" data-bs-slide-to="${i}" aria-label="Slide ${i + 1}"></button>
             `
         }
-        // Add the first slide PICTURES of the Carousel
+        // Add the first slide PICTURE of the Carousel
         htmlContentToAppend += `
         </div>
         <div class="carousel-inner">
@@ -69,6 +69,7 @@ function fillImgCarousel() { // Fill the image carousel using product Pictures
     <div id="carousel" class="carousel slide" data-bs-ride="false" data-bs-touch="true">
     `
     if (currentProduct.images.length > 0) { // Check for images of the product
+        // Add the first slide PICTURE of the Carousel
         htmlContentToAppend += `
         <div class="carousel-inner">
             <div class="carousel-item allow-zoom active" data-bs-target="#carouselZoom" data-bs-slide-to="0">
@@ -97,6 +98,7 @@ function fillImgCarousel() { // Fill the image carousel using product Pictures
         </button>
     </div>
     `
+    // Images thumbnails as Carousel INDICATORS
     htmlContentToAppend += `
     <h6 class="mt-2"><strong>Imágenes ilustrativas</strong></h6>
     `
@@ -104,10 +106,15 @@ function fillImgCarousel() { // Fill the image carousel using product Pictures
         htmlContentToAppend += `
         <div class="row flex-row flex-nowrap overflow-auto">
         `
-        for (let i = 0; i < currentProduct.images.length; i++) {
+        htmlContentToAppend += `
+        <div class="col-3">
+            <img src="${currentProduct.images[0]}" data-bs-target="#carousel" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1" title="${currentProduct.name} imágen ilustrativa 1" alt="${currentProduct.description} imágen nro. 1" class="border rounded img-fluid">
+        </div>
+        `
+        for (let i = 1; i < currentProduct.images.length; i++) {
             htmlContentToAppend += `
             <div class="col-3">
-                <img src="${currentProduct.images[i]}" data-bs-target="#carousel" data-bs-slide-to="${i}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
+                <img src="${currentProduct.images[i]}" data-bs-target="#carousel" data-bs-slide-to="${i}" aria-label="Slide ${i + 1}" title="${currentProduct.name} imágen ilustrativa ${i + 1}" alt="${currentProduct.description} imágen nro. ${i + 1}" class="border rounded img-fluid">
             </div>
             `
         }
@@ -152,18 +159,16 @@ function showProductInfoAndPictures() {
     <h6><strong>Categoría</strong></h6>
     <p class="fs-6">${currentProduct.category}</p>
     
-    
-    <p class="text-end"><button type="button" class="btn btn-success text-end" id="btn-add-to-cart"><i class="fas fa-regular fa-cart-plus"></i>Agregar</button></p>
+    <p class="text-end"><button type="button" class="btn btn-success text-end" id="btn-add-to-cart"><i class="fas fa-regular fa-cart-plus"></i> Agregar</button></p>
     `
 
     infoContainer.innerHTML = htmlContentToAppend;
 
-    document.getElementById('btn-add-to-cart').addEventListener("click", updateLocalCart); // Add to cart button event
+    document.getElementById('btn-add-to-cart').addEventListener("click", updateLocalCart); // Add to cart Button Event
+    document.getElementById('back-to-listing-category-name').innerHTML = currentProduct.category;
 
     fillZoomedImgModal(); // Fill the modal with carousel with the product images
     fillImgCarousel(); // Fill the modal with carousel with the product images
-
-    document.getElementById('back-to-listing-category-name').innerHTML = currentProduct.category;
 }
 
 function showRelatedProducts() {
