@@ -1,6 +1,6 @@
 const userID = USER_ID;
 
-let userCart = {};
+let currentUserCart = {};
 
 forceUserLogin();
 
@@ -14,9 +14,9 @@ function showArticles() {
     let htmlProductToAppend = '';
     productListElement.innerHTML = htmlProductToAppend;
 
-    if (userCart?.articles == undefined || userCart.articles?.lenght == 0) return // End function if there are no articles or Articles is undefined
+    if (currentUserCart?.articles == undefined || currentUserCart.articles?.lenght == 0) return // End function if there are no articles or Articles is undefined
 
-    for (const art of userCart.articles) {
+    for (const art of currentUserCart.articles) {
         htmlProductToAppend += `
         <tr>
             <td><img src="${art.image}" alt="${art.name}" onclick="setProdIDAndRedirect(${art.id})" class="rounded img-fit-table"></td>
@@ -29,6 +29,14 @@ function showArticles() {
         `
         productListElement.innerHTML = htmlProductToAppend;
     }
+}
+
+// Get this user's cart from locally stored cart's data
+function loadAndShowCartArticles() {
+    let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
+
+    currentUserCart = locallyStoredCarts[locallyStoredCarts.findIndex(cart => cart.user === userID)]; // Return the Cart matching the user ID, and get the first element
+    showArticles();
 }
 
 // Update local stored cart articles if count is changed for an article!
@@ -46,40 +54,31 @@ function updateCantAndShowArticles(event) {
         cant = 1;
     }
 
-    userCart.articles[userCart.articles.findIndex(art => art.id === artID)].count = cant;
-    locallyStoredCarts[locallyStoredCarts.findIndex(cart => cart.user === userID)] = userCart;
+    currentUserCart.articles[currentUserCart.articles.findIndex(art => art.id === artID)].count = cant;
+    locallyStoredCarts[locallyStoredCarts.findIndex(cart => cart.user === userID)] = currentUserCart;
     localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts))
 
     loadAndShowCartArticles();
 }
 
-// Get this user's cart from locally stored cart's data
-function loadAndShowCartArticles() {
-    let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
-
-    userCart = locallyStoredCarts[locallyStoredCarts.findIndex(cart => cart.user === userID)]; // Return the Cart matching the user ID, and get the first element
-    showArticles();
-}
-
 function deleteArticle(element) {
     let artIdToDelete = parseInt(element.getAttribute('data-prod-id')); // ID of the selected article
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
-    let userCartIndex = locallyStoredCarts.findIndex(cart => cart.user === userID)
-    let userCart = locallyStoredCarts[userCartIndex]; // This user's Cart
+    let localUserCartIndex = locallyStoredCarts.findIndex(cart => cart.user === userID)
+    let localUserCart = locallyStoredCarts[localUserCartIndex]; // This user's Cart
 
-    let artIndex = userCart.articles.findIndex(art => art.id === artIdToDelete); // Finding article to delete index on Cart Articles Array
+    let artIndex = currentUserCart.articles.findIndex(art => art.id === artIdToDelete); // Finding article to delete index on Cart Articles Array
 
     if (artIndex >= 0) {
-        userCart.articles.splice(artIndex, 1); // Remove the article from index found by article ID
+        localUserCart.articles.splice(artIndex, 1); // Remove the article from index found by article ID
         // Update LocalStorage
-        locallyStoredCarts[userCartIndex] = userCart;
+        locallyStoredCarts[localUserCartIndex] = localUserCart;
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts))
     } else {
         alert('Hubo un error al eliminar este artículo');
     }
 
     loadAndShowCartArticles();
-
 }
 
 function updateCarts(apiCart) { // Load API served Cart into local storage
@@ -92,20 +91,23 @@ function updateCarts(apiCart) { // Load API served Cart into local storage
         locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
     }
 
-    let userCartIndex = locallyStoredCarts.findIndex(cart => cart?.user === userID);
-    let userCart = locallyStoredCarts[userCartIndex];
-    if (userCart < 0 || userCart == undefined) { // Save user Cart if doesn't already exist
+    let localUserCartIndex = locallyStoredCarts.findIndex(cart => cart?.user === userID);
+    let localUserCart = locallyStoredCarts[localUserCartIndex];
+    if (localUserCart < 0 || localUserCart == undefined) { // Save user Cart if doesn't already exist
         locallyStoredCarts.push(apiCart);
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts));
     } else { // Update user Cart using Cart served by API
-        for (let i = 0; i < apiCart.articles.length; i++) {
-            if (userCart.articles.every(art => art.id != apiCart.articles[i].id)) {
-                userCart.articles.push(apiCart.articles[i]);
+        //for (let i = 0; i < apiCart.articles.length; i++) {
+        for (const apiArti of apiCart.articles) {
+            if (localUserCart.articles.every(localArti => apiArti.id != localArti.id)) {
+                localUserCart.articles.push(apiArti);
             }
         }
-        locallyStoredCarts[userCartIndex] = userCart;
+        locallyStoredCarts[localUserCartIndex] = localUserCart;
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts));
     }
+
+    loadAndShowCartArticles();
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -117,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         } else {
             alert("No se pudo obtener la lista de productos.\n" + resultObj.data);
         }
-    }).then(loadAndShowCartArticles)// This could be illegal :O
+    })//.then(loadAndShowCartArticles)// This could be illegal :O
 
     document.addEventListener("change", (e) => {
         if (e.target.tagName === 'INPUT') {
