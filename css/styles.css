@@ -102,7 +102,7 @@ footer p {
 
 /* Custom rules -------------------------------------------------------*/
 
-.modal-content {
+.modal-content-transparent {
   background-color: transparent;
   border: 0
 }
@@ -115,9 +115,36 @@ footer p {
   width: 4em;
 }
 
-input[type='number']{
+input[type='number'] {
   min-width: min-content;
   max-width: max-content;
+}
+
+
+/* My custom invalid feedback for validation */
+.invalid-feedback-custom {
+  display: none;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: .875em;
+  color: #dc3545
+}
+
+.invalid-feedback-custom-show {
+  display: block
+}
+
+/* Remove arrows fot type number inputts */
+/* Chrome, Safari, Edge, Opera */
+.ni-no-arrows::-webkit-outer-spin-button,
+.ni-no-arrows::-webkit-inner-spin-button {
+  display: none;
+  margin: 0;
+}
+
+/* Firefox */
+.ni-no-arrows[type=number] {
+  display: textfield;
 }
 
 /* End of custom rules ------------------------------------------------*/

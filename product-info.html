@@ -41,7 +41,7 @@
     <div class="modal fade" id="imgCarouselModal" tabindex="-1" aria-labelledby="ZoomedImagesCarouselModal"
       aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content modal-content-transparent">
           <div class="modal-body">
             HOLA esto es un modal
           </div>
@@ -52,10 +52,11 @@
       <!-- Product information -->
       <div class="row row-cols-1 row-cols-lg-2 mb-4">
         <div class="col">
-          <button type="button" class="btn btn-outline-secondary" id="btn-back"><i
+          <button type="button" class="btn btn-link" id="btn-back-category-list"><i
               class="fas fa-solid fa-arrow-left"></i>
-            Volver al
-            listado (<span id="back-to-listing-category-name"></span>)</button>
+            Categorías</button>
+          <button type="button" class="btn btn-link" id="btn-back-product-list"><i
+              class="fas fa-solid fa-arrow-left"></i><span id="back-to-listing-category-name"></span></button>
         </div>
         <div class="col mt-4" id="prod-title-container">
 

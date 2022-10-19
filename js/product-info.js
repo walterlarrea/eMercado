@@ -127,7 +127,7 @@ function fillImgCarousel() { // Fill the image carousel using product Pictures
     carouselContainer.innerHTML = htmlContentToAppend;
 }
 
-function showProductInfoAndPictures() {
+function showProductInfo() {
     //console.log(currentProduct);
     let htmlContentToAppend = '';
     let titleContainer = document.getElementById('prod-title-container');
@@ -168,9 +168,6 @@ function showProductInfoAndPictures() {
 
     document.getElementById('btn-add-to-cart').addEventListener("click", updateLocalCart); // Add to cart Button Event
     document.getElementById('back-to-listing-category-name').innerHTML = currentProduct.category;
-
-    fillZoomedImgModal(); // Fill the modal with carousel with the product images
-    fillImgCarousel(); // Fill the modal with carousel with the product images
 }
 
 function showRelatedProducts() {
@@ -180,7 +177,7 @@ function showRelatedProducts() {
 
     for (const prod of currentProduct.relatedProducts) {
         htmlContentToAppend += `
-        <div onclick="setProdID(${prod.id})" class="border rounded h-100 m-1 col-6 col-sm-4 col-lg-3">
+        <div onclick="setProdIDAndRedirect(${prod.id})" class="border rounded h-100 m-1 col-6 col-sm-4 col-lg-3">
             <div class="row">
                 <img class="p-0" src="${prod.image}" alt="...">
             </div>
@@ -193,7 +190,7 @@ function showRelatedProducts() {
     relatedProdContainer.innerHTML = htmlContentToAppend;
 }
 
-function setProdID(id) {
+function setProdIDAndRedirect(id) {
     localStorage.setItem("prodID", id);
     window.location = "product-info.html";
 }
@@ -204,7 +201,7 @@ function loadCommentsLocallyStored() {
     }
 }
 
-function sortCommentsNewFirst(commentsToSort) {
+function sortCommentsNewerFirst(commentsToSort) {
     commentsToSort.sort(function (a, b) {
         if (a.dateTime > b.dateTime) { return -1; }
         if (a.dateTime < b.dateTime) { return 1; }
@@ -219,9 +216,10 @@ function loadAndShowProductComments() {
     commentsContainer.innerHTML = htmlContentToAppend;
 
     loadCommentsLocallyStored()
+
     // Concatenate remote stored comments and locally allocated into one new array
     let prodComments = currentProdComments.concat(allLocalProdComments.filter(comm => comm.product == localStorage.getItem("prodID")));
-    prodComments = sortCommentsNewFirst(prodComments);
+    prodComments = sortCommentsNewerFirst(prodComments);
 
     for (const comment of prodComments) {
         htmlContentToAppend += `
@@ -233,6 +231,7 @@ function loadAndShowProductComments() {
             <div class="col-auto auto-me">
                 <p>
                 `
+        // Add commentary stars
         for (let i = 1; i <= 5; i++) {
             if (i <= comment.score) {
                 htmlContentToAppend += `
@@ -288,6 +287,7 @@ function newCommentary() {
             }
 
             saveCommentsToLocalStore(newComment);
+            // Reset new commentaries input
             commentDescription.value = "";
             commentScore.value = 1;
             loadAndShowProductComments();
@@ -300,47 +300,42 @@ function newCommentary() {
 }
 
 function updateLocalCart() {
+    if (currentProduct === undefined && userID === undefined) return; // Check for product and user data
+
     let locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
 
-    if (currentProduct === undefined && userID === undefined) return; // Check for valid data
-
-    if (locallyStoredCarts === null) { // Create LocalStorage if doesn't already exist
-        localStorage.setItem('cartArticlesByUsrID', JSON.stringify([]));
-        locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
+    if (locallyStoredCarts === null) { // Declare cart obj container if localStorage doesn't already exist
+        locallyStoredCarts = {};
     }
 
-    let eUserCartIndex = locallyStoredCarts.findIndex(cart => cart.user === userID);
-    let eUserCart = locallyStoredCarts[eUserCartIndex];
-    if (eUserCart === undefined) { // Create user's cart if doesn't already exist
+    if (locallyStoredCarts[userID] === undefined) { // Create user's cart if doesn't already exist
         let newCart = {
             user: userID,
             articles: []
         }
-        locallyStoredCarts.push(newCart);
-        localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts))
-        locallyStoredCarts = JSON.parse(localStorage.getItem('cartArticlesByUsrID'));
-        eUserCartIndex = locallyStoredCarts.findIndex(cart => cart.user === userID);
-        eUserCart = locallyStoredCarts[eUserCartIndex];
-    } // Check for valid existent user cart
+        // Store new cart using this user ID
+        locallyStoredCarts[userID] = newCart;
+    }
 
-    let eArticle = eUserCart.articles[eUserCart.articles.findIndex(art => art.id === currentProduct.id)];
-    if (eArticle === undefined) {
+    let existingArticle = locallyStoredCarts[userID].articles.find(art => art.id === currentProduct.id);
+    if (existingArticle === undefined) {
         let newArticle = {
             id: currentProduct.id,
             name: currentProduct.name,
-            count: '1',
+            count: 1,
             unitCost: currentProduct.cost,
             currency: currentProduct.currency,
             image: currentProduct.images[0] ?? ''
         }
-        eUserCart.articles.push(newArticle);
         // Update LocalStorage
-        locallyStoredCarts[eUserCartIndex] = eUserCart;
+        locallyStoredCarts[userID].articles.push(newArticle);
         localStorage.setItem('cartArticlesByUsrID', JSON.stringify(locallyStoredCarts))
     } else {
         alert('Ya tienes este producto en tu carrito');
     }
 
+    // Redirect to cart
+    window.location = "cart.html";
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -358,7 +353,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("prodID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
             currentProduct = resultObj.data;
-            showProductInfoAndPictures();
+            showProductInfo();
+            fillZoomedImgModal(); // Fill the modal with carousel with the product images
+            fillImgCarousel(); // Fill the modal with carousel with the product images
             showRelatedProducts();
         } else {
             alert("No se pudo obtener información del producto.\n" + resultObj.data);
@@ -375,5 +372,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
 
     // Back to listing event
-    document.getElementById('btn-back').addEventListener("click", (e) => window.location = "products.html");
+    document.getElementById('btn-back-product-list').addEventListener("click", (e) => window.location = "products.html");
+    document.getElementById('btn-back-category-list').addEventListener("click", (e) => window.location = "categories.html");
 });

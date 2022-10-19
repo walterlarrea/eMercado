@@ -136,4 +136,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
         showProductsList();
     })
+
+    document.getElementById('btn-back-category-list').addEventListener("click", (e) => window.location = "categories.html");
 });
