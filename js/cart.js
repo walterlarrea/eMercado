@@ -49,12 +49,12 @@ function updateCosts() {
         else return acc + (art.unitCost / DOLLAR_VALUE) * art.count // Convert valuations in pesos($) to dollars(USD)
     }, 0));   // Get sub total from the sum of all article costo multiplied by the amount of each
 
-    shippingComisionCost = parseInt(purchaseSubtotalCost * (parseInt(shippingTypeSelection.value) / 100));
+    shippingComisionCost = parseInt(purchaseSubtotalCost * (parseInt(shippingTypeSelection?.value) / 100)) || undefined;
     // Calculate shipping costs over subtotal sum
 
     subtotalElement.innerHTML = purchaseSubtotalCost;
-    shippingCostElement.innerHTML = shippingComisionCost;
-    totalCostElement.innerHTML = purchaseSubtotalCost + shippingComisionCost;
+    shippingCostElement.innerHTML = shippingComisionCost || "-";
+    totalCostElement.innerHTML = shippingComisionCost ? purchaseSubtotalCost + shippingComisionCost : "-";
 }
 
 function displaySelectedPaymentMethod() {
