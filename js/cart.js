@@ -42,19 +42,31 @@ function updateCosts() {
     // Find selected radio button for shipping options
     const shippingTypeSelection = Array.from(document.getElementsByName('shipping-option')).find(radioInput => radioInput.checked);
 
-    purchaseSubtotalCost = parseInt(currentUserCart.articles.reduce((acc, art) => {
-        //acc += (art.currency === "USD" ? art.unitCost : art.unitCost / DOLLAR_VALUE) * art.count
+    let purchaseSubtotalCost = 0;
 
-        if (art.currency === "USD") return acc + art.unitCost * art.count
-        else return acc + (art.unitCost / DOLLAR_VALUE) * art.count // Convert valuations in pesos($) to dollars(USD)
-    }, 0));   // Get sub total from the sum of all article costo multiplied by the amount of each
+    // Get sub-total from the sum of all articles cost multiplied by the amount of each
+    for (const art of currentUserCart.articles) {
+        if (art.currency === "UYU") {
+            purchaseSubtotalCost += (art.unitCost / DOLLAR_VALUE) * art.count // Convert values in pesos($) to dollars(USD)
+        }
+        else {
+            purchaseSubtotalCost += art.unitCost * art.count
+        }
+    }
+    purchaseSubtotalCost = parseInt(purchaseSubtotalCost);
 
+    // Calculate shipping costs over sub-total sum
     shippingComisionCost = parseInt(purchaseSubtotalCost * (parseInt(shippingTypeSelection?.value) / 100)) || undefined;
-    // Calculate shipping costs over subtotal sum
 
     subtotalElement.innerHTML = purchaseSubtotalCost;
-    shippingCostElement.innerHTML = shippingComisionCost || "-";
-    totalCostElement.innerHTML = shippingComisionCost ? purchaseSubtotalCost + shippingComisionCost : "-";
+
+    if (shippingComisionCost === undefined) {
+        shippingCostElement.innerHTML = "-";
+        totalCostElement.innerHTML = "-";
+    } else {
+        shippingCostElement.innerHTML = shippingComisionCost;
+        totalCostElement.innerHTML = purchaseSubtotalCost + shippingComisionCost;
+    }
 }
 
 function displaySelectedPaymentMethod() {
@@ -63,17 +75,15 @@ function displaySelectedPaymentMethod() {
 
     // Show the name of the selected payment method
     document.getElementById('display-pay-method').innerHTML = selectedRadio.labels[0].innerHTML;
-
 }
 
 function checkAndDisplayPaymentValidationFeedback() {
     const paymentOptionSelection = Array.from(document.getElementsByName('payment-method')).find(radioInput => radioInput.checked);
-    const paymentModalError = document.getElementById('display-pay-method-error');
+    const paymentModalErrorMsg = document.getElementById('display-pay-method-error');
 
     let inputCardNumber = document.getElementById('credit-card-number');
     let inputCardSecNumber = document.getElementById('credit-card-sec-code');
     let inputCardExpDate = document.getElementById('credit-card-expire-date');
-
     let inputBankNumber = document.getElementById('bank-account-number');
 
     if (paymentOptionSelection !== undefined
@@ -81,10 +91,10 @@ function checkAndDisplayPaymentValidationFeedback() {
         && inputCardSecNumber.checkValidity()
         && inputCardExpDate.checkValidity()
         && inputBankNumber.checkValidity()) {
-        paymentModalError.classList.remove('invalid-feedback-custom-show');
+        paymentModalErrorMsg.classList.remove('invalid-feedback-custom-show');
         return true;
     } else {
-        paymentModalError.classList.add('invalid-feedback-custom-show');
+        paymentModalErrorMsg.classList.add('invalid-feedback-custom-show');
         return false;
     }
 }
@@ -231,25 +241,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
 
     // Form validation events
-    paymentOptionsModal.addEventListener('hidden.bs.modal', () => {
-        checkAndDisplayPaymentValidationFeedback();
-    });
+    // paymentOptionsModal.addEventListener('hidden.bs.modal', () => {
+    //     checkAndDisplayPaymentValidationFeedback();
+    // });
 
+    // This is a dummy div element to encapsulate form-controls on the payment-modal
+    // made to apply .was-validated parent-class on those required controls
+    let falsePaymentForm = document.getElementById('dummy-modal-form');
     let purchaseForm = document.getElementById('purchase-form');
+
     purchaseForm.addEventListener('submit', event => {
-        // This is a dummy div element to encapsulate form-controls on the payment-modal
-        // made to apply .was-validated parent-class on those required controls
-        let falsePaymentForm = document.getElementById('dummy-modal-form');
+        checkAndDisplayPaymentValidationFeedback();
 
-        // 
-        checkAndDisplayPaymentValidationFeedback()
-
-        // Stop & Prevent Submittion if Form is not validated
-        if (!checkAndDisplayPaymentValidationFeedback() || !purchaseForm.checkValidity()) {
+        if (!purchaseForm.checkValidity()) {
+            // Stop & Prevent Submittion if Form is not validated    
             event.preventDefault();
             event.stopPropagation();
         } else {
-            // Stop & Prevent Submittion anyway :P (testing)
+            // Stop & Prevent Submittion anyway :P (TESTING)
             event.preventDefault();
             event.stopPropagation();
 
@@ -259,7 +268,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         falsePaymentForm.classList.add('was-validated');
         purchaseForm.classList.add('was-validated');
-
     });
 
 });
