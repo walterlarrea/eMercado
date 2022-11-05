@@ -115,6 +115,10 @@ footer p {
   width: 4em;
 }
 
+.img-fit-title {
+  width: 3em;
+}
+
 input[type='number'] {
   min-width: min-content;
   max-width: max-content;

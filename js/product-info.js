@@ -226,7 +226,7 @@ function loadAndShowProductComments() {
         <div class="list-group-item">
             <div class="row">
             <div class="col-auto auto-me">
-                <p><strong>${comment.user}</strong> - ${comment.dateTime} -</p>
+                <p><strong>${comment.user.slice(0, comment.user.search("@"))}</strong> - ${comment.dateTime} -</p>
             </div>
             <div class="col-auto auto-me">
                 <p>
@@ -277,7 +277,7 @@ function newCommentary() {
                 product: parseInt(currentProduct.id),
                 score: parseInt(commentScore.value),
                 description: commentDescription.value,
-                user: localStorage.getItem("loggedUser").toString().slice(0, localStorage.getItem("loggedUser").toString().search("@")),
+                user: localStorage.getItem("loggedUser"),
                 dateTime: dateTime.toLocaleString("es-US", { year: 'numeric' }) + "-" +
                     dateTime.toLocaleString("es-US", { month: '2-digit' }) + "-" +
                     dateTime.toLocaleString("es-US", { day: '2-digit' }) + " " +
